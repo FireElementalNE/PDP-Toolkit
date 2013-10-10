@@ -13,6 +13,6 @@ for root, dirnames, filenames in os.walk(directory):
 	for filename in filenames:
 		if isRacketFile(filename):
 			fh = open(os.path.join(root,filename))
-			runReports(directory+filename,filename)
+			runReports(directory+filename,filename,directory)
 
 
