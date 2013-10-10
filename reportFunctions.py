@@ -1,4 +1,32 @@
-import re
+import re,datetime,os
+from CONFIG import *
+
+def runReports(fullFileName, fileName):
+	EQUALSSTRING = '='*NUMEQUALS+'\n'
+	outFile = fileName[:-3] + 'Report'
+	inFh = open(fullFileName,'r')
+	if not os.path.isdir('REPORTS'):
+		os.mkdir('REPORTS')
+	outFh = open('REPORTS/'+outFile,'w+')
+	content = []
+	with inFh as f:
+			content = f.readlines()
+	lineReport = runLineReport(content)
+	commentReport = commentCodeRatio(content)
+
+	theTime = datetime.datetime.now().strftime("%H:%M %B %d, %Y")
+	outFh.write('Report on ' + fileName + '\n')
+	outFh.write('Run on ' + theTime + '\n\n')
+	outFh.write('LINE REPORT ' + '\n' + EQUALSSTRING)
+	outFh.write(lineReport)
+	outFh.write('COMMENT/CODE REPORT ' + '\n' + EQUALSSTRING)
+	outFh.write(commentReport)
+
+def isRacketFile(fileName):
+	racketRe = '^.*\.rkt$'
+	if re.match(racketRe,fileName):
+		return True
+	return False
 
 def runLineReport(content):
 	lineNum = 1
