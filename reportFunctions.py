@@ -7,7 +7,7 @@ if myOS != 'Windows':
 	slashDirection = '/'
 
 def runReports(fullFileName, fileName, directory):
-	FULLOUTPUTDIRNAME = directory+'ReportsOn'
+	FULLOUTPUTDIRNAME = directory+'Reports'
 	EQUALSSTRING = '='*NUMEQUALS+'\n'
 	outFile = fileName[:-3] + 'Report'
 	inFh = open(fullFileName,'r')
