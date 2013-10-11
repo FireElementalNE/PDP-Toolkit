@@ -1,28 +1,18 @@
-import reportFunctions,datetime
-from CONFIG import *
+
+from reportFunctions import runReports,isRacketFile
 from sys import argv,exit
+import os
 
 try:
-	inFile = argv[1] 
+	directory = argv[1] 
 except IndexError:
 	print 'usage: ' + argv[0] + ' <input file>'
 	exit(0)
 
-EQUALSSTRING = '='*NUMEQUALS+'\n'
+for root, dirnames, filenames in os.walk(directory):
+	for filename in filenames:
+		if isRacketFile(filename):
+			fh = open(os.path.join(root,filename))
+			runReports(directory+filename,filename,directory)
 
-inFh = open(inFile,'r') 
-outFh = open(outFile,'w+')
-content = []
-with inFh as f:
-		content = f.readlines()
 
-lineReport = reportFunctions.runLineReport(content)
-commentReport = reportFunctions.commentCodeRatio(content)
-
-theTime = datetime.datetime.now().strftime("%H:%M %B %d, %Y")
-outFh.write('Report on ' + argv[1] + '\n')
-outFh.write('Run on ' + theTime + '\n\n')
-outFh.write('LINE REPORT ' + '\n' + EQUALSSTRING)
-outFh.write(lineReport)
-outFh.write('COMMENT/CODE REPORT ' + '\n' + EQUALSSTRING)
-outFh.write(commentReport)
