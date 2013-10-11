@@ -41,7 +41,7 @@ def putFirstLine():
 
 def putEntry():
 	f = open(filename, 'a')
-	f.write("%(date)s\t%(who)s\t%(start)s\t%(stop)s\t%(interruptions)s\t\t\t\t%(question)s\t\t\t%(timeOnTask)d\t\t\t%(comments)s\n" % \
+	f.write("%(date)s\t%(who)s\t\t%(start)s\t%(stop)s\t%(interruptions)s\t\t\t\t%(question)s\t\t\t%(timeOnTask)d\t\t\t%(comments)s\n" % \
 		{"timeOnTask" : getTimeOnTask(), "date" : date, "who" : who, "start" : start, "stop" : stop, 
 		 "interruptions": interruptions, 
 		 "question" : question, 
