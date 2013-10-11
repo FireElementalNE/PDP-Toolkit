@@ -2,13 +2,13 @@ import re,datetime,os
 from CONFIG import *
 
 def runReports(fullFileName, fileName, directory):
-	FULLOUTPUTFILENAME = 'ReportsOn-'+directory[:-1]
+	FULLOUTPUTDIRNAME = 'ReportsOn-'+directory[:-1]
 	EQUALSSTRING = '='*NUMEQUALS+'\n'
 	outFile = fileName[:-3] + 'Report'
 	inFh = open(fullFileName,'r')
-	if not os.path.isdir(FULLOUTPUTFILENAME):
-		os.mkdir(FULLOUTPUTFILENAME)
-	outFh = open(FULLOUTPUTFILENAME+'/'+outFile,'w+')
+	if not os.path.isdir(FULLOUTPUTDIRNAME):
+		os.mkdir(FULLOUTPUTDIRNAME)
+	outFh = open(FULLOUTPUTDIRNAME+'/'+outFile,'w+')
 	content = []
 	with inFh as f:
 			content = f.readlines()
