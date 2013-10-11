@@ -1,4 +1,3 @@
-
 from reportFunctions import runReports,isRacketFile
 from sys import argv,exit
 import os
@@ -6,7 +5,7 @@ import os
 try:
 	directory = argv[1] 
 except IndexError:
-	print 'usage: ' + argv[0] + ' <input file>'
+	print 'usage: ' + argv[0] + ' <input directory>'
 	exit(0)
 
 for root, dirnames, filenames in os.walk(directory):
