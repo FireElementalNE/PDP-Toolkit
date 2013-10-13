@@ -55,8 +55,15 @@ def commentCodeRatio(content):
 	for x in content:
 		if not re.match(myRegex,x) and len(x) > 1:
 			code = code + 1.0
+		elif re.match(myRegex,x) and len(x) > 1:
+			comments = comments + 1.0
+		else:
+			empty = empty + 1.0
 	codeToWaste = code/len(content)
-	return 'Number of Lines with Code: ' + str(code) + '\n' + 'Total Lines: ' + str(len(content)) + '\n' + 'Code to total Ratio: ' + str(codeToWaste) + '\n'
+	codeLines = 'Number of Lines with Code:     ' + str(int(code))
+	commentLines = 'Number of Lines with Comments: ' + str(int(comments))
+	emptyLines = 'Number of Empty Lines:         ' + str(int(empty))
+	return codeLines + '\n' + commentLines + '\n' + emptyLines + '\n' + 'Total Lines: ' + str(len(content)) + '\n' + 'Code to total Ratio: ' + str(codeToWaste) + '\n'
 
 
 
