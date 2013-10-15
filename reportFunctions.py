@@ -97,7 +97,7 @@ def lambdaAnalysis(content):
 			prevLine = x
 			myFlag = True
 		lineNum = lineNum + 1
-	total = 'Found ' + str(lambdaCount) + 'lambda Functions' + '\n'
+	total = 'Found ' + str(lambdaCount) + ' lambda Functions' + '\n'
 	good = None
 	if lambdaGood == 1:
 		good = str(lambdaGood) + ' is apparently all set' + '\n'
