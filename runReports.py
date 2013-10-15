@@ -25,10 +25,14 @@ else:
 
 fh = open(directory+myPS+'-provides','w+')
 content = urllib.urlopen('http://www.ccs.neu.edu/course/cs5010f13/problem-sets/' + myPS + '.html').read()
-providesRegex = '\<pre\>([\w\d\-]*)\s\:\s'
-allprivides = re.findall(providesRegex,contetn)
-print allprivides
+providesRegex = '([\w\d\-\?]*)\s\:\s'
+allprivides = re.findall(providesRegex,content)
 
+
+for x in allprivides:
+	fh.write('(provide ' + x + ')\n')
+
+fh.close()	
 
 
 
