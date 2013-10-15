@@ -1,9 +1,19 @@
-from reportFunctions import runReports,isRacketFile,shouldSkip
+from reportFunctions import runReports,runQualifications
 from sys import argv,exit
 from CONFIG import PROBLEMSET
 import os,re,urllib
 
+def isRacketFile(fileName):
+	racketRe = '^.*\.rkt$'
+	return re.match(racketRe,fileName)
 
+def shouldSkipExtra(fileName):
+	skipRegex = '^extras\.rkt$'
+	return re.match(skipRegex,fileName)
+
+def shouldSkipQual(fileName):
+	skipRegex = '^ps\d{2}\-[\w\-\d]*qualification\.rkt$'
+	return re.match(skipRegex,fileName)
 
 try:
 	directory = argv[1] 
@@ -13,9 +23,11 @@ except IndexError:
 
 for root, dirnames, filenames in os.walk(directory):
 	for filename in filenames:
-		if isRacketFile(filename) and not shouldSkip(filename):
+		if isRacketFile(filename) and not shouldSkipExtra(filename) and not shouldSkipQual(filename):
 			fh = open(os.path.join(root,filename))
 			runReports(directory+filename,filename,directory)
+		if shouldSkipQual(filename):
+			runQualifications(directory,filename)
 
 myPS = None
 if PROBLEMSET > 9:

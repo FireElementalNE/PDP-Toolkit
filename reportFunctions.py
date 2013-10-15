@@ -1,5 +1,6 @@
 import re,datetime,os,platform
 import collections
+import subprocess
 from CONFIG import *
 
 myOS = platform.system()
@@ -35,14 +36,7 @@ def runReports(fullFileName, fileName, directory):
 	outFh.write(commentReport)
 
 
-def isRacketFile(fileName):
-	racketRe = '^.*\.rkt$'
-	return re.match(racketRe,fileName)
 
-def shouldSkip(fileName):
-	skipRegex = '^ps\d{2}\-[\w\-\d]*qualification\.rkt$'
-	skipRegex2 = '^extras\.rkt$'
-	return re.match(skipRegex,fileName) or re.match(skipRegex2,fileName)
 
 def runLineReport(content):
 	lineNum = STARTAT
@@ -113,10 +107,16 @@ def lambdaAnalysis(content):
 		bad = str(lambdaBad) + ' of these have no contract and are as follows: ' + '\n'
 	badString = ''
 	badDict = collections.OrderedDict(sorted(badDict.items()))
-	#badDict = sorted(badDict, key=lambda key: badDict[key])
 	for key,value in badDict.iteritems():
 		badString = badString + '\t' + 'line ' + str(key) + ' had this: ' + value + '\n'
 	return total + good + bad + badString + '\n'
+
+def runQualifications(directory,fileName):
+	print 'RUNNING: ' + fileName
+	proc = subprocess.Popen(['racket',directory+fileName],stdout=subprocess.PIPE, shell=True)
+	(out, err) = proc.communicate()
+	print out
+
 
 
 
