@@ -37,17 +37,20 @@ def runReports(fullFileName, fileName, directory):
 
 def isRacketFile(fileName):
 	racketRe = '^.*\.rkt$'
-	if re.match(racketRe,fileName):
-		return True
-	return False
+	return re.match(racketRe,fileName)
+
+def shouldSkip(fileName):
+	skipRegex = '^ps\d{2}\-[\w\-\d]*qualification\.rkt$'
+	skipRegex2 = '^extras\.rkt$'
+	return re.match(skipRegex,fileName) or re.match(skipRegex2,fileName)
 
 def runLineReport(content):
 	lineNum = STARTAT
 	returnString = ''
 	count = 0
 	for x in content:
-		if len(x) > 81 and lineNum > 3:
-			returnString +=  str(lineNum-3) + ' is over 80 characters. got ' + x 
+		if len(x) > 81 and lineNum > 0:
+			returnString +=  str(lineNum) + ' is over 80 characters. got ' + x 
 			count = count + 1
 		lineNum = lineNum + 1
 	return [returnString + '\n',count]
@@ -99,11 +102,15 @@ def lambdaAnalysis(content):
 		lineNum = lineNum + 1
 	total = 'Found ' + str(lambdaCount) + ' lambda Functions' + '\n'
 	good = None
+	bad = None
 	if lambdaGood == 1:
 		good = str(lambdaGood) + ' is apparently all set' + '\n'
 	else:
 		good = str(lambdaGood) + ' are apparently all set' + '\n'
-	bad = str(lambdaBad) + ' of these have no contract and are as follows: ' + '\n'
+	if lambdaBad == 0:
+		bad = CONGRATSLAMBDAMESSEGE + '\n'
+	else:
+		bad = str(lambdaBad) + ' of these have no contract and are as follows: ' + '\n'
 	badString = ''
 	badDict = collections.OrderedDict(sorted(badDict.items()))
 	#badDict = sorted(badDict, key=lambda key: badDict[key])
