@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import os, datetime
+import os, datetime, platform
 
 filename = "notebook.txt"
 date = datetime.datetime.now().strftime('%m/%d')
@@ -86,7 +86,10 @@ def putTotals():
 	f.close()
 
 def clearScreen():
-	os.system("clear")
+	if platform.system() == "Windows":
+		os.system("cls")
+	else:
+		os.system("clear")
 
 def vim():
 	os.system("vim " + filename)
