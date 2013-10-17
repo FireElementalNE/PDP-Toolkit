@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 import os, datetime, platform
+from CONFIG import WHOSTRING
 
 filename = "notebook.txt"
 date = datetime.datetime.now().strftime('%m/%d')
 start = datetime.datetime.now().strftime('%H:%M')
 stop = datetime.datetime.now().strftime('%H:%M')
-who = "FA"
+who = WHOSTRING
 interruptions = "0"
 question = "1"
 comments = " "
