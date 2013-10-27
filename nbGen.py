@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 import os, datetime, platform
-from CONFIG import WHOSTRING
+from CONFIG import WHOSTRING,NBGEN_FILENAME,NBGEN_DIR,LONG_NB
 
-filename = "notebook.txt"
+filename = NBGEN_FILENAME
 date = datetime.datetime.now().strftime('%m/%d')
 start = datetime.datetime.now().strftime('%H:%M')
 stop = datetime.datetime.now().strftime('%H:%M')
@@ -32,21 +32,29 @@ def printEntry():
 def printFile():
 	print "="*30
 	print "Contents of " + filename + " - "
-	print open(filename,'r').read()
+	print open(NBGEN_DIR+filename,'r').read()
 	print "="*30
 
 def putFirstLine():	
-	f = open(filename, 'w')
+	f = open(NBGEN_DIR+filename, 'w')
 	f.write("Date\tWho\tStart\tStop\tInterruptions\tQuestion\tTimeOnTask\tComments\n")
 	f.close()
 
 def putEntry():
-	f = open(filename, 'a')
-	f.write("%(date)s\t%(who)s\t\t%(start)s\t%(stop)s\t%(interruptions)s\t\t\t\t%(question)s\t\t\t%(timeOnTask)d\t\t\t%(comments)s\n" % \
-		{"timeOnTask" : getTimeOnTask(), "date" : date, "who" : who, "start" : start, "stop" : stop, 
-		 "interruptions": interruptions, 
-		 "question" : question, 
-		 "comments" : comments})
+	f = open(NBGEN_DIR+filename, 'a')
+	if LONG_NB:
+		f.write("%(date)s\t%(who)s\t\t%(start)s\t%(stop)s\t%(interruptions)s\t\t\t\t%(question)s\t\t\t%(timeOnTask)d\t\t\t%(comments)s\n" % \
+			{"timeOnTask" : getTimeOnTask(), "date" : date, "who" : who, "start" : start, "stop" : stop, 
+		 	"interruptions": interruptions, 
+		 	"question" : question, 
+		 	"comments" : comments})
+	else:
+		f.write("%(date)s\t%(who)s\t%(start)s\t%(stop)s\t%(interruptions)s\t\t%(question)s\t\t%(timeOnTask)d\t\t%(comments)s\n" % \
+			{"timeOnTask" : getTimeOnTask(), "date" : date, "who" : who, "start" : start, "stop" : stop, 
+		 	"interruptions": interruptions, 
+		 	"question" : question, 
+		 	"comments" : comments})
+
 	f.close()
 
 	global start, stop
@@ -55,12 +63,12 @@ def putEntry():
 	
 
 def putGitEntry():
-	f = open(filename,'a')
+	f = open(NBGEN_DIR+filename,'a')
 	f.write("============committing to git: %(date)s %(time)s ===================\n" % {"date" : date, "time" : datetime.datetime.now().strftime('%H:%M')})
 	f.close()
 
 def getTotals():
-	contents = open(filename,'r').readlines()[1:] #Skip first line
+	contents = open(NBGEN_DIR+filename,'r').readlines()[1:] #Skip first line
 	totals = {}
 	for i in contents:
 		if i[0:3] == "===" or len(i) < 5: #arbitrary 5 means not just a \n
@@ -74,7 +82,7 @@ def getTotals():
 
 def putTotals():
 	totals = getTotals()
-	f = open(filename, 'a')
+	f = open(NBGEN_DIR+filename, 'a')
 	f.write("\n")
 	for i in sorted(totals.iterkeys()):
 		m = "%d" % totals[i]

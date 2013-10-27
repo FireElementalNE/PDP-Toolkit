@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import sys, re
-
+from CONFIG import COMMENTSTYLE
 '''
 How to use me:
 
@@ -73,7 +73,7 @@ def main(filename):
 		lines = group.split("\n")
 		# print group
 		for x in lines:
-			if x[0:3] != ";; " and len(x) > 1: # a comment - throw it at the end
+			if x[0:3] != COMMENTSTYLE and len(x) > 1: # a comment - throw it at the end
 				f.write(x + "\n")
 				# print "comment is: " + "'" + x + "'"
 			else:
