@@ -35,9 +35,6 @@ def runReports(fullFileName, fileName, directory):
 	outFh.write('COMMENT/CODE REPORT ' + '\n' + EQUALSSTRING)
 	outFh.write(commentReport)
 
-
-
-
 def runLineReport(content):
 	lineNum = STARTAT
 	returnString = ''
@@ -69,30 +66,27 @@ def commentCodeRatio(content):
 
 def lambdaAnalysis(content):
 	badDict = {}
-	lambdaRegex = '.*\(lambda.*\n'
-	lambdaRegex2 = '.*\;'
+	lambdaRegex = '.*\(lambda.*'
+	commentRegex = '.*\;'
 	lineFixer = '^[\t\s]*(.*)\n$'
 	lambdaCount = 0
 	lambdaGood = 0
 	lambdaBad = 0
 	lineNum = STARTAT
-	myFlag = False
 	prevLine = None
-	for x in content:
-		if myFlag:
-			if re.match(lambdaRegex2,x):
-				lambdaGood = lambdaGood + 1
-				myFlag = False
-			else:
-				m = re.match(lineFixer,prevLine)
-				badDict[lineNum-1] = m.group(1)
-				lambdaBad = lambdaBad + 1
-				myFlag = False
 
+	for x in content:
 		if re.match(lambdaRegex,x):
 			lambdaCount = lambdaCount + 1
-			prevLine = x
+			m = re.match(commentRegex,prevLine)
+			if m:
+				lambdaGood = lambdaGood + 1
+			else:
+				m = re.match(lineFixer,x)
+				badDict[lineNum-1] = m.group(1)
+				lambdaBad = lambdaBad + 1
 			myFlag = True
+		prevLine = x
 		lineNum = lineNum + 1
 	total = 'Found ' + str(lambdaCount) + ' lambda Functions' + '\n'
 	good = None
