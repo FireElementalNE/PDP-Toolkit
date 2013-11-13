@@ -4,7 +4,7 @@ CONGRATSLAMBDAMESSEGE = 'No lambda functions were incorrect! CONGRAZ!'
 STARTAT = -2
 PROBLEMSET = 6
 
-WHOSTRING = 'LK,DS'
+WHOSTRING = 'LK,SC'
 
 NBGEN_FILENAME = "notebook.txt"
 NBGEN_DIR = ".\\"
